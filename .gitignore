@@ -1,0 +1,7 @@
+node_modules
+dist
+www
+cfg/config.json
+.tmp
+bower_components
+.idea

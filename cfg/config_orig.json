@@ -1,0 +1,13 @@
+{
+  "db": {
+    "host": "localhost",
+    "name": "boatsale",
+    "user": "root",
+    "pass": "root"
+  },
+  "require": {
+    "lib": {
+      "idiorm": "/lib/idiorm/idiorm.php"
+    }
+  }
+}

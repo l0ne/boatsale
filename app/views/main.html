@@ -1,0 +1,220 @@
+<div class="container" style="padding-top: 60px;">
+  <h1 class="page-header">Edit Profile</h1>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="text-center">
+        <img ng-src="{{user.avatar}}" class="avatar img-circle img-thumbnail" alt="avatar">
+        <h6>Upload a different photo...</h6>
+        <input type="file" class="text-center center-block well well-sm">
+      </div>
+    </div>
+    <!-- edit form column -->
+    <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+
+      <div class="alert alert-info alert-dismissable" ng-show="invites">
+        <a class="panel-close close" data-dismiss="alert">×</a>
+        <i class="fa fa-coffee"></i>
+        You have <strong>Invite</strong> to boat!
+      </div>
+
+      <h3>Personal info</h3>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Name:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.name}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Address:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.address}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Phone:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.phone}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Birthday:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.birthday}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Email:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="{{user.email}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Password:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="{{user.password}}" type="password">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Confirm password:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="{{user.password}}" type="password">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <input class="btn btn-primary" value="Save Changes" type="button">
+            <span></span>
+            <input class="btn btn-default" value="Cancel" type="reset">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <h1 class="page-header">Book boat</h1>
+
+  <div class="row">
+    <div class="col-sm-12">
+
+      <div class="base-line">
+        <div class="btn-group">
+          <button class="btn btn-default">
+            {{filters.type ? filters.type : 'Boat type'}}
+          </button>
+          <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="changeFilter('type', '')">None</a></li>
+            <li><a href="" ng-repeat="type in boatTypes" ng-click="changeFilter('type', type.type)">{{type.type}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="base-line">
+        <div class="btn-group">
+          <button class="btn btn-default">
+            {{filters.size ? filters.size : 'Boat size'}}
+          </button>
+          <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="changeFilter('size', size.size)">None</a></li>
+            <li><a href="" ng-repeat="size in boatSizes" ng-click="changeFilter('size', size.size)">{{size.size}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Boats</th>
+          <th>Size</th>
+          <th class="text-center">Price</th>
+          <th class="text-center">Total</th>
+          <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="boat in boats | filter: filters">
+          <td class="col-sm-8 col-md-6">
+            <div class="media">
+              <a class="thumbnail pull-left" href="#"> <img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;"> </a>
+              <div class="media-body">
+                <h4 class="media-heading"><a href="#">{{boat.type}}</a></h4>
+                <h5 class="media-heading"> by <a href="#">Brand name</a></h5>
+                <span>Status: </span><span class="text-success"><strong>{{boatStatus[boat.status]}}</strong></span>
+              </div>
+            </div></td>
+          <td class="col-sm-1 col-md-1 text-center"><strong>{{boat.size}}</strong></td>
+          <td class="col-sm-1 col-md-1 text-center"><strong>${{boat.price}}</strong></td>
+          <td class="col-sm-1 col-md-1 text-center"><strong>${{boat.total}}</strong></td>
+          <td class="col-sm-1 col-md-1">
+            <button type="button" ng-click="startBookBoat(boat.id)" ng-hide="boat.status != 0" class="btn btn-success">
+              Book boat
+            </button>
+            <button type="button" ng-click="canselBookBoat(boat.id)" class="btn btn-danger" ng-show="boat.status != 0 && boat.book_owner == user.id">
+              <span class="glyphicon glyphicon-remove"></span> Cansel
+            </button>
+
+            <button type="button" ng-click="acceptBookBoat(boat.id)" class="btn btn-primary invite" ng-show="boat.status != 0 && boat.book_owner == user.id">
+              <span class="glyphicon glyphicon-remove"></span> Accept booking
+            </button>
+
+            <div ng-repeat="invite in invites" ng-show="invite.boat_id == boat.id">
+              <button type="button" ng-click="acceptInvite(invite.id)" class="btn btn-primary" >
+                Accept invite
+              </button>
+              <button type="button" ng-click="declineInvite(invite.id)" class="btn btn-warning invite">
+                Decline invite
+              </button>
+            </div>
+
+            <div class="btn-group invite" ng-show="boat.status != 0 && boat.book_owner == user.id">
+              <button class="btn btn-default">
+                Invite
+              </button>
+              <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="inviteUser in users">
+                  <a href="" ng-click="sendInvite(inviteUser.id, boat.id)">{{inviteUser.name}}</a>
+                </li>
+                <!--<li class="disabled">-->
+                  <!--<a href="#">Another action</a>-->
+                <!--</li>-->
+                <!--<li class="divider">-->
+                <!--</li>-->
+                <!--<li>-->
+                  <!--<a href="#">Something else here</a>-->
+                <!--</li>-->
+              </ul>
+            </div>
+
+          </td>
+        </tr>
+
+        <!--<tr>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td><h5>Subtotal</h5></td>-->
+          <!--<td class="text-right"><h5><strong>$24.59</strong></h5></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td><h5>Estimated shipping</h5></td>-->
+          <!--<td class="text-right"><h5><strong>$6.94</strong></h5></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td><h3>Total</h3></td>-->
+          <!--<td class="text-right"><h3><strong>$31.53</strong></h3></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td>   </td>-->
+          <!--<td>-->
+            <!--<button type="button" class="btn btn-default">-->
+              <!--<span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping-->
+            <!--</button></td>-->
+          <!--<td>-->
+            <!--<button type="button" class="btn btn-success">-->
+              <!--Checkout <span class="glyphicon glyphicon-play"></span>-->
+            <!--</button></td>-->
+        <!--</tr>-->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
